@@ -7,7 +7,7 @@ namespace Reversi
     {
         
         // Dit zijn alle buttons op het reversibord.
-        Button[,] klik_veld;
+        Button[,] KlikVelden;
 
         // Variabele om bord in op te slaan
         Bord bord;
@@ -19,23 +19,23 @@ namespace Reversi
 
             this.ClientSize = new Size(bord.Lengte * 60, bord.Breedte * 60);
             this.Text = "Reversi";
-            genereer_klikveld();
+            GenereerKlikveld();
             
         }
         //Maakt klik_veld en voegt hem aan de Form toe
-        void genereer_klikveld()
+        void GenereerKlikveld()
         {
-            klik_veld = new Button[bord.Lengte, bord.Breedte];
+            KlikVelden = new Button[bord.Lengte, bord.Breedte];
             for (int i = 0; i < bord.Lengte; i++)
             {
                 for (int j = 0; j < bord.Breedte; j++)
                 {
-                    klik_veld[i,j] = new Button();
-                    klik_veld[i,j].Location = new Point(i * 60, j * 60);
-                    klik_veld[i, j].Text = "";
-                    klik_veld[i, j].Size = new Size(60, 60);
-                    klik_veld[i, j].MouseClick += new MouseEventHandler(Beurt);
-                    this.Controls.Add(klik_veld[i, j]);
+                    KlikVelden[i,j] = new Button();
+                    KlikVelden[i,j].Location = new Point(i * 60, j * 60);
+                    KlikVelden[i, j].Text = "";
+                    KlikVelden[i, j].Size = new Size(60, 60);
+                    KlikVelden[i, j].MouseClick += new MouseEventHandler(Beurt);
+                    this.Controls.Add(KlikVelden[i, j]);
                 }
             }
             RenderBord();
@@ -51,7 +51,7 @@ namespace Reversi
             {
                 for (int j = 0; j < bord.Breedte; j++)
                 {
-                    klik_veld[i, j].BackColor = kleur[bord.Velden[i,j]];
+                    KlikVelden[i, j].BackColor = kleur[bord.Velden[i,j]];
                     //gr.FillEllipse(steen[Bord[i, j]], i, j, 10, 10);
                 }
             }
@@ -61,7 +61,7 @@ namespace Reversi
         void Beurt(object sender, MouseEventArgs e)
         {
             Button b = (Button)sender;
-            if (bord.Player % 2 != 0)
+            if (bord.Speler % 2 != 0)
                 b.BackColor = Color.Red;
             // Add BLAUW!
 
@@ -70,7 +70,7 @@ namespace Reversi
             // Add ROOD!
 
             sender = (object)b;
-            bord.Player += 1;
+            bord.Speler += 1;
 
         }
     }
