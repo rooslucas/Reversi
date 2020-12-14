@@ -15,33 +15,29 @@ namespace Reversi
 
         // Hier worden de berekeningen/tests mee gedaan. 
         // Bij waarde 0 is het stuk leeg, bij waarde 1 is het stuk Rood en bij waarde 2 is het stuk blauw.
-        public int[,] Velden;
+        private int[,] Velden;
 
         public int KrijgVeld(int x, int y)
         {
             return Velden[x, y];
         }
 
-        public void ZetVeld(int x, int y, int Speler)
+        public void ZetVeld(int x, int y, int speler)
         {
-            if (Speler == 0)
-                Velden[x, y] = 0;
-            else if (Speler % 2 != 0)
-                Velden[x, y] = 1;
-            else if (Speler % 2 == 0)
-                Velden[x, y] = 2;
+            if (speler == 0 || speler == 1 || speler == 2)
+                Velden[x, y] = speler;
         }
 
         // Maakt een leeg bord met in het midden 4 stukken van beide partijen.
-        public Bord(int Lengte, int Breedte)
+        public Bord(int Breedte, int Lengte)
         {
             this.Lengte = Lengte;
             this.Breedte = Breedte;
-            this.Velden = new int[Lengte, Breedte];
-            for (int i = 0; i < Lengte; i++)
+            this.Velden = new int[Breedte, Lengte];
+            for (int x = 0; x < Breedte; x++)
             {
-                for (int j = 0; j < Breedte; j++)
-                    ZetVeld(i, j, 0);
+                for (int y = 0; y < Lengte; y++)
+                    ZetVeld(x, y, 0);
             }
             ZetVeld(Lengte / 2 - 1, Breedte / 2 - 1, 1);
             ZetVeld(Lengte / 2, Breedte / 2, 1);
@@ -49,10 +45,18 @@ namespace Reversi
             ZetVeld(Lengte / 2 - 1, Breedte / 2, 2);
         }
 
-        void BeurtValide()
+        public bool BeurtValide(int x, int y)
         {
-            // TODO kleur leeg
-            // TODO: Plek valide
+            // Controleer of de kleur leeg is
+            if (Velden[x, y] == 0)
+                return true;
+
+            // Controleer of de zet geldig is
+            // TODO: zet geldig controleren
+
+            else
+                return false;
+
         }
     }
 }

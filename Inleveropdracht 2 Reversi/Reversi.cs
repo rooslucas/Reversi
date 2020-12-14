@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using System.Drawing;
+using System;
 
 namespace Reversi
 {
@@ -17,7 +18,7 @@ namespace Reversi
         {
             bord = new Bord(6, 6); // Initalizeer het model
 
-            this.ClientSize = new Size(bord.Lengte * 60, bord.Breedte * 60);
+            this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60);
             this.Text = "Reversi";
             GenereerKlikveld();
             
@@ -25,17 +26,21 @@ namespace Reversi
         //Maakt klik_veld en voegt hem aan de Form toe
         void GenereerKlikveld()
         {
-            KlikVelden = new Button[bord.Lengte, bord.Breedte];
-            for (int i = 0; i < bord.Lengte; i++)
+            KlikVelden = new Button[bord.Breedte, bord.Lengte];
+            for (int x = 0; x < bord.Breedte; x++)
             {
-                for (int j = 0; j < bord.Breedte; j++)
+                for (int y = 0; y < bord.Lengte; y++)
                 {
-                    KlikVelden[i,j] = new Button();
-                    KlikVelden[i,j].Location = new Point(i * 60, j * 60);
-                    KlikVelden[i, j].Text = "";
-                    KlikVelden[i, j].Size = new Size(60, 60);
-                    KlikVelden[i, j].MouseClick += new MouseEventHandler(Beurt);
-                    this.Controls.Add(KlikVelden[i, j]);
+                    Button button = new Button();
+                    button.Location = new Point(x * 60, y * 60);
+                    button.Text = "";
+                    button.Size = new Size(60, 60);
+                    button.MouseClick += new MouseEventHandler(Beurt);
+
+                    // Maak een tag zodat deze later gebruikt kan worden om een zet te doen
+                    button.Tag = $"{x} {y}";
+                    this.KlikVelden[x, y] = button;
+                    this.Controls.Add(KlikVelden[x, y]);
                 }
             }
             RenderBord();
@@ -44,15 +49,12 @@ namespace Reversi
         //De buttons in klik_veld worden geupdate met de waardes in bord 
         void RenderBord()
         {
-            // Graphics gr = pea.Graphics;
             Color[] kleur = { Color.White, Color.Blue, Color.Red };
-            // SolidBrush[] steen = { new SolidBrush(Color.White), new SolidBrush(Color.Red), new SolidBrush(Color.Blue) };
-            for (int i = 0; i < bord.Lengte; i++)
+            for (int x = 0; x < bord.Breedte; x++)
             {
-                for (int j = 0; j < bord.Breedte; j++)
+                for (int y = 0; y < bord.Lengte; y++)
                 {
-                    KlikVelden[i, j].BackColor = kleur[bord.Velden[i,j]];
-                    //gr.FillEllipse(steen[Bord[i, j]], i, j, 10, 10);
+                    KlikVelden[x, y].BackColor = kleur[bord.KrijgVeld(x,y)];
                 }
             }
         }
@@ -60,17 +62,32 @@ namespace Reversi
         // Speler die aan de beurt is plaatst steen van zijn kleur
         void Beurt(object sender, MouseEventArgs e)
         {
+            int x, y;
+            string [] tag;
             Button b = (Button)sender;
-            if (bord.Speler % 2 != 0)
-                b.BackColor = Color.Red;
-            // Add BLAUW!
 
-            else
-                b.BackColor = Color.Blue;
-            // Add ROOD!
+            // Gebruik de eerder gemaakte tag om te kijken waar de zet gedaan wordt
+            tag = (b.Tag.ToString()).Split(' ');
+            x = int.Parse(tag[0]);
+            y = int.Parse(tag[1]);
 
-            sender = (object)b;
-            bord.Speler += 1;
+            // Controleer wie er aan de beurt is en verander de steen van kleur
+            // Voeg controleer beurt toe
+            if (bord.BeurtValide(x, y))
+            {
+                if (bord.Speler == 1)
+                {
+                    bord.ZetVeld(x, y, 1);
+                    bord.Speler += 1;
+                }
+                else if (bord.Speler == 2)
+                {
+                    bord.ZetVeld(x, y, 2);
+                    bord.Speler -= 1;
+                }
+            }
+            
+            RenderBord();
 
         }
     }
