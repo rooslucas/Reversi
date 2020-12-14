@@ -1,6 +1,0 @@
-C:\Users\auker\source\repos\Inleveropdracht 2 Reversi\Inleveropdracht 2 Reversi\bin\Release\Inleveropdracht 2 Reversi.exe.config
-C:\Users\auker\source\repos\Inleveropdracht 2 Reversi\Inleveropdracht 2 Reversi\bin\Release\Inleveropdracht 2 Reversi.exe
-C:\Users\auker\source\repos\Inleveropdracht 2 Reversi\Inleveropdracht 2 Reversi\bin\Release\Inleveropdracht 2 Reversi.pdb
-C:\Users\auker\source\repos\Inleveropdracht 2 Reversi\Inleveropdracht 2 Reversi\obj\Release\Inleveropdracht 2 Reversi.csproj.CoreCompileInputs.cache
-C:\Users\auker\source\repos\Inleveropdracht 2 Reversi\Inleveropdracht 2 Reversi\obj\Release\Inleveropdracht 2 Reversi.exe
-C:\Users\auker\source\repos\Inleveropdracht 2 Reversi\Inleveropdracht 2 Reversi\obj\Release\Inleveropdracht 2 Reversi.pdb
