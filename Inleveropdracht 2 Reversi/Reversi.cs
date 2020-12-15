@@ -13,17 +13,40 @@ namespace Reversi
         // Variabele om bord in op te slaan
         Bord bord;
 
-        // Dit is de tekst die op onder het bord komt te staan
-
+        // Dit zijn de tekst en buttons die op onder het bord komen te staan
+        Label aanzet;
+        Button help, nieuwspel;
         
 
         public Reversi()
         {
             bord = new Bord(6, 6); // Initalizeer het model
 
+            aanzet = new Label();
+            help = new Button();
+            nieuwspel = new Button();
+
+            // Laat zien wie er begint
+            aanzet.Location = new Point(30, bord.Lengte * 60 + 50);
+            aanzet.Size = new Size(150, 20);
+            aanzet.Text = "Blauw begint";
+            aanzet.ForeColor = Color.Blue;
+            this.Controls.Add(aanzet);
+
+            // Toon de help en nieuwspel button
+            help.Location = new Point(205, bord.Lengte * 60 + 120);
+            nieuwspel.Location = new Point(75, bord.Lengte * 60 + 120);
+            help.Size = new Size(80, 20);
+            nieuwspel.Size = new Size(80, 20);
+            help.Text = "Help";
+            nieuwspel.Text = "Nieuw Spel";
+            this.Controls.Add(help);
+            this.Controls.Add(nieuwspel);
+
 
             this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60 + 200);
             this.Text = "Reversi";
+            
             GenereerKlikveld();
             
         }
@@ -84,18 +107,21 @@ namespace Reversi
                     bord.ZetVeld(x, y, 1);
                     bord.Speler = 2;
                     bord.TegenSpeler = 1;
-                    // Text --> rood is aan de beurt
+                    this.aanzet.Text = "Rood is aan zet";
+                    this.aanzet.ForeColor = Color.Red;
                 }
                 else if (bord.Speler == 2)
                 {
                     bord.ZetVeld(x, y, 2);
                     bord.Speler = 1;
                     bord.TegenSpeler = 2;
-                    // Text --> blauw is aan de beurt
+                    this.aanzet.Text = "Blauw is aan zet";
+                    this.aanzet.ForeColor = Color.Blue;
                 }
             }
 
-            // else : deze zet is niet geldig
+            else
+                this.aanzet.Text = $"DEZE ZET IS NIET GELDIG";
             // controleer hier of spel is afgelopen
             
             RenderBord();
