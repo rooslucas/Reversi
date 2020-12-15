@@ -12,18 +12,22 @@ namespace Reversi
 
         // Variabele om bord in op te slaan
         Bord bord;
+
+        // Dit is de tekst die op onder het bord komt te staan
+
         
 
         public Reversi()
         {
             bord = new Bord(6, 6); // Initalizeer het model
 
-            this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60);
+
+            this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60 + 200);
             this.Text = "Reversi";
             GenereerKlikveld();
             
         }
-        //Maakt klik_veld en voegt hem aan de Form toe
+        //Maakt de klik velden en voegt hem aan de Form toe
         void GenereerKlikveld()
         {
             KlikVelden = new Button[bord.Breedte, bord.Lengte];
@@ -92,6 +96,7 @@ namespace Reversi
             }
 
             // else : deze zet is niet geldig
+            // controleer hier of spel is afgelopen
             
             RenderBord();
 

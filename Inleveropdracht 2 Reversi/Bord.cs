@@ -41,141 +41,127 @@ namespace Reversi
                 for (int y = 0; y < Lengte; y++)
                     ZetVeld(x, y, 0);
             }
-            ZetVeld(Lengte / 2 - 1, Breedte / 2 - 1, 1);
-            ZetVeld(Lengte / 2, Breedte / 2, 1);
-            ZetVeld(Lengte / 2, Breedte / 2 - 1, 2);
-            ZetVeld(Lengte / 2 - 1, Breedte / 2, 2);
+            ZetVeld(Breedte / 2 - 1, Lengte / 2 - 1, 1);
+            ZetVeld(Breedte / 2, Lengte / 2, 1);
+            ZetVeld(Breedte / 2 - 1, Lengte / 2, 2);
+            ZetVeld(Breedte / 2, Lengte / 2 - 1, 2);
         }
 
         // Controleer of de zet geldig is aan de hand van de regels
         public bool BeurtValide(int x, int y)
         {
-            bool aanliggend, boven, onder, links, rechts, rechtsboven, linksboven, rechtsonder, linksonder;
             
             // Controleer of de kleur leeg is
             if (Velden[x, y] == 0)
             {
-                // Controleer of tegenspeler ernaast ligt door te controleren of een plek ernaast de juiste kleur heeft
-                aanliggend = false;
-
-                if (x == 0)
-                {
-                    rechts = Velden[x + 1, y] == TegenSpeler;
-
-                    if (y == 0)
-                    {
-                        onder = Velden[x, y + 1] == TegenSpeler;
-                        rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-
-                        if (onder || rechts || rechtsonder)
-                            aanliggend = true;
-                    }
-
-                    else if (y > 0 && y < 6)
-                    {
-                        boven = Velden[x, y - 1] == TegenSpeler;
-                        onder = Velden[x, y + 1] == TegenSpeler;
-                        rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-                        rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-
-                        if (boven || onder || rechts || rechtsonder || rechtsboven)
-                            aanliggend = true;
-                    }
-
-                    else if (y == 6)
-                    {
-                        boven = Velden[x, y - 1] == TegenSpeler;
-                        rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-
-                        if (boven || rechts || rechtsboven)
-                            aanliggend = true;
-                    }
-                }
-
-                else if (x > 0 && x < 6)
-                {
-                    if (y == 0)
-                    {
-                        onder = Velden[x, y + 1] == TegenSpeler;
-                        rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-                        linksonder = Velden[x - 1, y - 1] == TegenSpeler;
-
-                        if (onder || rechtsonder || linksonder)
-                            aanliggend = true;
-                    }
-
-                    if (y > 0 && y < 6)
-                    {
-                        boven = Velden[x, y - 1] == TegenSpeler;
-                        onder = Velden[x, y + 1] == TegenSpeler;
-                        links = Velden[x - 1, y] == TegenSpeler;
-                        rechts = Velden[x + 1, y] == TegenSpeler;
-                        rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-                        linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-                        rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-                        linksonder = Velden[x - 1, y - 1] == TegenSpeler;
-
-                        if (boven || onder || links || rechts || rechtsboven || linksboven || rechtsonder || linksonder)
-                            aanliggend = true;
-                    }
-
-                    if (y == 6)
-                    {
-                        boven = Velden[x, y - 1] == TegenSpeler;
-                        rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-                        linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-
-                        if (boven || rechtsboven || linksboven)
-                            aanliggend = true;
-                    }
-                }
-
-                else if (x == 6)
-                {
-                    links = Velden[x - 1, y] == TegenSpeler;
-
-                    if (y == 0)
-                    {
-                        onder = Velden[x, y + 1] == TegenSpeler;
-                        linksonder = Velden[x - 1, y - 1] == TegenSpeler;
-
-                        if (onder || links || linksonder)
-                            aanliggend = true;
-                    }
-
-                    else if (y > 0 && y < 6)
-                    {
-                        boven = Velden[x, y - 1] == TegenSpeler;
-                        onder = Velden[x, y + 1] == TegenSpeler;
-                        linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-                        linksonder = Velden[x - 1, y - 1] == TegenSpeler;
-
-                        if (boven || onder || links || linksonder || linksboven)
-                            aanliggend = true;
-                    }
-
-                    else if (y == 6)
-                    {
-                        boven = Velden[x, y - 1] == TegenSpeler;
-                        linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-
-                        if (boven || links || linksboven)
-                            aanliggend = true;
-                    }
-                }
-
-                if (aanliggend)
+                if (Aanliggend(x, y))
                     return true;
-                else
-                    // Controleer of spel afgelopen
-                    return false;
-
+                else return false;
             }
 
             else
-                // controleer of spel afgelopen
                 return false;
 
+        }
+
+        private bool Aanliggend(int x, int y)
+        {
+            bool boven, onder, links, rechts, rechtsboven, linksboven, rechtsonder, linksonder;
+
+            // Controleer of tegenspeler ernaast ligt door te controleren of een plek ernaast de juiste kleur heeft
+            boven = false;
+            onder = false;
+            links = false;
+            rechts = false;
+            rechtsboven = false;
+            linksboven = false;
+            rechtsonder = false;
+            linksonder = false;
+
+            if (x == 0)
+            {
+                rechts = Velden[x + 1, y] == TegenSpeler;
+
+                if (y == 0)
+                {
+                    onder = Velden[x, y + 1] == TegenSpeler;
+                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
+                }
+
+                else if (y > 0 && y < (Lengte - 1))
+                {
+                    boven = Velden[x, y - 1] == TegenSpeler;
+                    onder = Velden[x, y + 1] == TegenSpeler;
+                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
+                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
+                }
+
+                else if (y == (Lengte - 1))
+                {
+                    boven = Velden[x, y - 1] == TegenSpeler;
+                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
+                }
+            }
+
+            else if (x > 0 && x < (Breedte - 1))
+            {
+                links = Velden[x - 1, y] == TegenSpeler;
+                rechts = Velden[x + 1, y] == TegenSpeler;
+
+                if (y == 0)
+                {
+                    onder = Velden[x, y + 1] == TegenSpeler;
+                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
+                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
+                }
+
+                if (y > 0 && y < (Lengte - 1))
+                {
+                    boven = Velden[x, y - 1] == TegenSpeler;
+                    onder = Velden[x, y + 1] == TegenSpeler;
+                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
+                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
+                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
+                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
+                }
+
+                if (y == (Lengte - 1))
+                {
+                    boven = Velden[x, y - 1] == TegenSpeler;
+                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
+                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
+                }
+            }
+
+            else if (x == (Breedte - 1))
+            {
+                links = Velden[x - 1, y] == TegenSpeler;
+
+                if (y == 0)
+                {
+                    onder = Velden[x, y + 1] == TegenSpeler;
+                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
+                }
+
+                else if (y > 0 && y < (Lengte - 1))
+                {
+                    boven = Velden[x, y - 1] == TegenSpeler;
+                    onder = Velden[x, y + 1] == TegenSpeler;
+                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
+                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
+                }
+
+                else if (y == (Lengte - 1))
+                {
+                    boven = Velden[x, y - 1] == TegenSpeler;
+                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
+                }
+            }
+
+            if (boven || onder || links || rechts || rechtsboven || linksboven || rechtsonder || linksonder)
+                return true;
+
+            else return false;
         }
     }
 }
