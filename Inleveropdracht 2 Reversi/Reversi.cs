@@ -71,21 +71,27 @@ namespace Reversi
             x = int.Parse(tag[0]);
             y = int.Parse(tag[1]);
 
-            // Controleer wie er aan de beurt is en verander de steen van kleur
-            // Voeg controleer beurt toe
+            // Controleer of de zet valide is
             if (bord.BeurtValide(x, y))
             {
+                // Controleer wie er aan de beurt is en verander de steen van kleur
                 if (bord.Speler == 1)
                 {
                     bord.ZetVeld(x, y, 1);
-                    bord.Speler += 1;
+                    bord.Speler = 2;
+                    bord.TegenSpeler = 1;
+                    // Text --> rood is aan de beurt
                 }
                 else if (bord.Speler == 2)
                 {
                     bord.ZetVeld(x, y, 2);
-                    bord.Speler -= 1;
+                    bord.Speler = 1;
+                    bord.TegenSpeler = 2;
+                    // Text --> blauw is aan de beurt
                 }
             }
+
+            // else : deze zet is niet geldig
             
             RenderBord();
 
