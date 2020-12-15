@@ -13,8 +13,9 @@ namespace Reversi
         // Variabele om bord in op te slaan
         Bord bord;
 
-        // Dit is de tekst die op onder het bord komt te staan
-        Label aanzet, invalide;
+        // Dit zijn de tekst en buttons die op onder het bord komen te staan
+        Label aanzet;
+        Button help, nieuwspel;
         
 
         public Reversi()
@@ -22,14 +23,26 @@ namespace Reversi
             bord = new Bord(6, 6); // Initalizeer het model
 
             aanzet = new Label();
-            invalide = new Label();
+            help = new Button();
+            nieuwspel = new Button();
 
             // Laat zien wie er begint
             aanzet.Location = new Point(30, bord.Lengte * 60 + 50);
-            aanzet.Size = new Size(100, 20);
+            aanzet.Size = new Size(150, 20);
             aanzet.Text = "Blauw begint";
             aanzet.ForeColor = Color.Blue;
             this.Controls.Add(aanzet);
+
+            // Toon de help en nieuwspel button
+            help.Location = new Point(205, bord.Lengte * 60 + 120);
+            nieuwspel.Location = new Point(75, bord.Lengte * 60 + 120);
+            help.Size = new Size(80, 20);
+            nieuwspel.Size = new Size(80, 20);
+            help.Text = "Help";
+            nieuwspel.Text = "Nieuw Spel";
+            this.Controls.Add(help);
+            this.Controls.Add(nieuwspel);
+
 
             this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60 + 200);
             this.Text = "Reversi";
@@ -107,7 +120,8 @@ namespace Reversi
                 }
             }
 
-            // else : deze zet is niet geldig
+            else
+                this.aanzet.Text = $"DEZE ZET IS NIET GELDIG";
             // controleer hier of spel is afgelopen
             
             RenderBord();
