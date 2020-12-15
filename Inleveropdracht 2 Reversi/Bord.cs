@@ -50,118 +50,27 @@ namespace Reversi
         // Controleer of de zet geldig is aan de hand van de regels
         public bool BeurtValide(int x, int y)
         {
-            
-            // Controleer of de kleur leeg is
-            if (Velden[x, y] == 0)
-            {
-                if (Aanliggend(x, y))
-                    return true;
-                else return false;
-            }
-
-            else
-                return false;
-
+            return Velden[x, y] == 0 && Aanliggend(x, y);
         }
 
+
+        //Controleert of het stuk een aanliggend stuk heeft
         private bool Aanliggend(int x, int y)
         {
-            bool boven, onder, links, rechts, rechtsboven, linksboven, rechtsonder, linksonder;
-
-            // Controleer of tegenspeler ernaast ligt door te controleren of een plek ernaast de juiste kleur heeft
-            boven = false;
-            onder = false;
-            links = false;
-            rechts = false;
-            rechtsboven = false;
-            linksboven = false;
-            rechtsonder = false;
-            linksonder = false;
-
-            if (x == 0)
+            bool aanliggend = false;
+            int[] burenX = { 0, 1, 0, -1 };
+            int[] burenY = { 1, 0, -1, 0 };
+            for (int i=0;i<4;i++)
             {
-                rechts = Velden[x + 1, y] == TegenSpeler;
-
-                if (y == 0)
+                if (0<=x + burenX[i] && x+burenX[i]<Lengte && 0 <=y+burenY[i] && y +burenY[i]<Breedte)
                 {
-                    onder = Velden[x, y + 1] == TegenSpeler;
-                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-                }
-
-                else if (y > 0 && y < (Lengte - 1))
-                {
-                    boven = Velden[x, y - 1] == TegenSpeler;
-                    onder = Velden[x, y + 1] == TegenSpeler;
-                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-                }
-
-                else if (y == (Lengte - 1))
-                {
-                    boven = Velden[x, y - 1] == TegenSpeler;
-                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
+                    if (Velden[x+burenX[i],y+burenY[i]]!=0)
+                    {
+                        aanliggend = true;
+                    }
                 }
             }
-
-            else if (x > 0 && x < (Breedte - 1))
-            {
-                links = Velden[x - 1, y] == TegenSpeler;
-                rechts = Velden[x + 1, y] == TegenSpeler;
-
-                if (y == 0)
-                {
-                    onder = Velden[x, y + 1] == TegenSpeler;
-                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
-                }
-
-                if (y > 0 && y < (Lengte - 1))
-                {
-                    boven = Velden[x, y - 1] == TegenSpeler;
-                    onder = Velden[x, y + 1] == TegenSpeler;
-                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-                    rechtsonder = Velden[x + 1, y + 1] == TegenSpeler;
-                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
-                }
-
-                if (y == (Lengte - 1))
-                {
-                    boven = Velden[x, y - 1] == TegenSpeler;
-                    rechtsboven = Velden[x + 1, y - 1] == TegenSpeler;
-                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-                }
-            }
-
-            else if (x == (Breedte - 1))
-            {
-                links = Velden[x - 1, y] == TegenSpeler;
-
-                if (y == 0)
-                {
-                    onder = Velden[x, y + 1] == TegenSpeler;
-                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
-                }
-
-                else if (y > 0 && y < (Lengte - 1))
-                {
-                    boven = Velden[x, y - 1] == TegenSpeler;
-                    onder = Velden[x, y + 1] == TegenSpeler;
-                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-                    linksonder = Velden[x - 1, y + 1] == TegenSpeler;
-                }
-
-                else if (y == (Lengte - 1))
-                {
-                    boven = Velden[x, y - 1] == TegenSpeler;
-                    linksboven = Velden[x - 1, y - 1] == TegenSpeler;
-                }
-            }
-
-            if (boven || onder || links || rechts || rechtsboven || linksboven || rechtsonder || linksonder)
-                return true;
-
-            else return false;
+            return aanliggend;
         }
     }
 }
