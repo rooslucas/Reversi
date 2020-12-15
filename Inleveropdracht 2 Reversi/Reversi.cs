@@ -14,16 +14,26 @@ namespace Reversi
         Bord bord;
 
         // Dit is de tekst die op onder het bord komt te staan
-
+        Label aanzet, invalide;
         
 
         public Reversi()
         {
             bord = new Bord(6, 6); // Initalizeer het model
 
+            aanzet = new Label();
+            invalide = new Label();
+
+            // Laat zien wie er begint
+            aanzet.Location = new Point(30, bord.Lengte * 60 + 50);
+            aanzet.Size = new Size(100, 20);
+            aanzet.Text = "Blauw begint";
+            aanzet.ForeColor = Color.Blue;
+            this.Controls.Add(aanzet);
 
             this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60 + 200);
             this.Text = "Reversi";
+            
             GenereerKlikveld();
             
         }
@@ -84,14 +94,16 @@ namespace Reversi
                     bord.ZetVeld(x, y, 1);
                     bord.Speler = 2;
                     bord.TegenSpeler = 1;
-                    // Text --> rood is aan de beurt
+                    this.aanzet.Text = "Rood is aan zet";
+                    this.aanzet.ForeColor = Color.Red;
                 }
                 else if (bord.Speler == 2)
                 {
                     bord.ZetVeld(x, y, 2);
                     bord.Speler = 1;
                     bord.TegenSpeler = 2;
-                    // Text --> blauw is aan de beurt
+                    this.aanzet.Text = "Blauw is aan zet";
+                    this.aanzet.ForeColor = Color.Blue;
                 }
             }
 
