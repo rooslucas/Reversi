@@ -99,7 +99,7 @@ namespace Reversi
             y = int.Parse(tag[1]);
 
             // Controleer of de zet valide is
-            if (bord.BeurtValide(x, y))
+            if (bord.BeurtValide(x, y, bord.Speler))
             {
                 // Controleer wie er aan de beurt is en verander de steen van kleur
                 if (bord.Speler == 1)
