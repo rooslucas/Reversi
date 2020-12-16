@@ -14,7 +14,7 @@ namespace Reversi
         Bord bord;
 
         // Dit zijn de tekst en buttons die op onder het bord komen te staan
-        Label aanzet;
+        Label aanzet, blauw, rood;
         Button help, nieuwspel;
         
 
@@ -23,6 +23,8 @@ namespace Reversi
             bord = new Bord(6, 6); // Initalizeer het model
 
             aanzet = new Label();
+            blauw = new Label();
+            rood = new Label();
             help = new Button();
             nieuwspel = new Button();
 
@@ -33,6 +35,16 @@ namespace Reversi
             aanzet.ForeColor = Color.Blue;
             this.Controls.Add(aanzet);
 
+            // Laat het aantal stenen per speler zien
+            blauw.Location = new Point(205, bord.Lengte * 60 + 50);
+            blauw.Size = new Size(150, 20);
+            blauw.Text = "2 stenen";
+            rood.Location = new Point(205, bord.Lengte * 60 + 70);
+            rood.Size = new Size(150, 20);
+            rood.Text = "2 stenen";
+            this.Controls.Add(blauw);
+            this.Controls.Add(rood);
+
             // Toon de help en nieuwspel button
             help.Location = new Point(205, bord.Lengte * 60 + 120);
             nieuwspel.Location = new Point(75, bord.Lengte * 60 + 120);
@@ -40,9 +52,10 @@ namespace Reversi
             nieuwspel.Size = new Size(80, 20);
             help.Text = "Help";
             nieuwspel.Text = "Nieuw Spel";
+            help.Click += this.Help;
+            nieuwspel.Click += this.Herstart;
             this.Controls.Add(help);
             this.Controls.Add(nieuwspel);
-
 
             this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60 + 200);
             this.Text = "Reversi";
@@ -125,6 +138,18 @@ namespace Reversi
             // controleer hier of spel is afgelopen
             
             RenderBord();
+
+        }
+
+        // Start een nieuw spel op
+        void Herstart(object sender, EventArgs e)
+        {
+            Application.Restart();
+        }
+
+        // Helpt met welke zetten mogelijk zijn
+        void Help(object sender, EventArgs e)
+        {
 
         }
     }
