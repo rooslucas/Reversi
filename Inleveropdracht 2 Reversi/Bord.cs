@@ -19,6 +19,11 @@ namespace Reversi
         // Bij waarde 0 is het stuk leeg, bij waarde 1 is het stuk Rood en bij waarde 2 is het stuk blauw.
         private int[,] Velden;
 
+        struct Bord_Update
+        {
+            public int tegelflip;
+            public int[,] nieuwVeld;
+        }
         public int KrijgVeld(int x, int y)
         {
             return Velden[x, y];
@@ -48,9 +53,9 @@ namespace Reversi
         }
 
         // Controleer of de zet geldig is aan de hand van de regels
-        public bool BeurtValide(int x, int y)
+        public bool BeurtValide(int x, int y, int speler)
         {
-            return Velden[x, y] == 0 && Aanliggend(x, y);
+            return Velden[x, y] == 0 && Aanliggend(x, y) && Zet(x,y,speler).tegelflip!=0;
         }
 
 
@@ -62,7 +67,7 @@ namespace Reversi
             int[] burenY = { 1, 0, -1, 0 };
             for (int i=0;i<4;i++)
             {
-                if (0<=x + burenX[i] && x+burenX[i]<Lengte && 0 <=y+burenY[i] && y +burenY[i]<Breedte)
+                if (0<=x + burenX[i] && x+burenX[i]<Breedte && 0 <=y+burenY[i] && y +burenY[i]<Lengte)
                 {
                     if (Velden[x+burenX[i],y+burenY[i]]!=0)
                     {
@@ -71,6 +76,39 @@ namespace Reversi
                 }
             }
             return aanliggend;
+        }
+        private Bord_Update Zet(int x, int y, int kleur)
+        {
+            Bord_Update update;
+            update.tegelflip = 0;
+            update.nieuwVeld = new int[Breedte, Lengte];
+            for (int i=0;i<Lengte;i++)
+            { 
+                for (int j=0;j<Breedte;j++)
+                    update.nieuwVeld[i,j] = Velden[i,j];
+            }
+            int[] burenX = { 1, 1, 1, 0, 0, -1, -1, -1 };
+            int[] burenY = { 1, 0, -1, 1, -1, 1, 0, -1 };
+            for (int direction=0;direction<8;direction++)
+            {
+                for (int distance=1;distance<Lengte;distance++)
+                {
+                    if (0 <= x + burenX[direction] * distance && x + burenX[direction] * distance < Breedte && 0 <= y + burenY[direction] * distance && y + burenY[direction] * distance < Lengte)
+                    {
+                        if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == 0)
+                            distance = Lengte;
+                        else if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == kleur)
+                        {
+                            update.tegelflip += distance - 1;
+                            for (int i=1;i<distance;i++)
+                            {
+                                Velden[x + burenX[direction] * i, y + burenY[direction] * i] = kleur;
+                            }
+                        }
+                    }
+                }
+            }
+            return update;
         }
     }
 }
