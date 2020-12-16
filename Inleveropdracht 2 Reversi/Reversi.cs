@@ -136,7 +136,12 @@ namespace Reversi
             else
                 this.aanzet.Text = $"DEZE ZET IS NIET GELDIG";
             // controleer hier of spel is afgelopen
-            
+
+            // Toon het aantal stenen
+            bord.AantalStenen();
+            this.blauw.Text = $"{bord.bstenen} stenen";
+            this.rood.Text = $"{bord.rstenen} stenen";
+
             RenderBord();
 
         }

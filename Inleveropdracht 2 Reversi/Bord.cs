@@ -14,6 +14,7 @@ namespace Reversi
         // Blauw is speler 1 en rood is speler 2
         public int Speler = 1;
         public int TegenSpeler = 2;
+        public int bstenen, rstenen;
 
         // Hier worden de berekeningen/tests mee gedaan. 
         // Bij waarde 0 is het stuk leeg, bij waarde 1 is het stuk Rood en bij waarde 2 is het stuk blauw.
@@ -52,6 +53,26 @@ namespace Reversi
             ZetVeld(Breedte / 2, Lengte / 2 - 1, 2);
         }
 
+        // Tel het aantal stenen voor beide kleuren
+        public void AantalStenen()
+        {
+            int x, y;
+            bstenen = 0;
+            rstenen = 0;
+
+            for (x = 0; x < Breedte; x++)
+            {
+                for (y = 0; y < Lengte; y++)
+                {
+                    if (Velden[x, y] == 1)
+                        bstenen += 1;
+                    if (Velden[x, y] == 2)
+                        rstenen += 1;
+
+                }
+            }
+        }
+
         // Controleer of de zet geldig is aan de hand van de regels
         public bool BeurtValide(int x, int y, int speler)
         {
@@ -70,9 +91,7 @@ namespace Reversi
                 if (0<=x + burenX[i] && x+burenX[i]<Breedte && 0 <=y+burenY[i] && y +burenY[i]<Lengte)
                 {
                     if (Velden[x+burenX[i],y+burenY[i]]!=0)
-                    {
                         aanliggend = true;
-                    }
                 }
             }
             return aanliggend;
