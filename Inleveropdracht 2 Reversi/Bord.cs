@@ -139,7 +139,7 @@ namespace Reversi
             return update;
         }
 
-/*        public bool Einde()
+        public bool Einde()
         {
             int x, y, einde;
             einde = 0;
@@ -147,7 +147,7 @@ namespace Reversi
             {
                 for (y = 0; y < Lengte; y++)
                 {
-                    if (!BeurtValide(x, y, 1) || !BeurtValide(x, y, 2))
+                    if (!BeurtValide(x, y))
                         einde += 1;
                 }
 
@@ -165,6 +165,6 @@ namespace Reversi
             else if (bstenen < rstenen)
                 return "ROOD HEEFT GEWONNEN";
             else return "HET IS GELIJKSPEL";
-        }*/
+        }
     }
 }
