@@ -122,12 +122,12 @@ namespace Reversi
             y = int.Parse(tag[1]);
 
             // Controleer of de zet valide is
-            if (bord.BeurtValide(x, y, bord.Speler))
+            if (bord.BeurtValide(x, y))
             {
+                bord.Velden = bord.update.nieuwVeld;
                 // Controleer wie er aan de beurt is en verander de steen van kleur
                 if (bord.Speler == 1)
                 {
-                    bord.ZetVeld(x, y, 1);
                     bord.Speler = 2;
                     bord.TegenSpeler = 1;
                     this.aanzet.Text = "Rood is aan zet";
@@ -135,7 +135,6 @@ namespace Reversi
                 }
                 else if (bord.Speler == 2)
                 {
-                    bord.ZetVeld(x, y, 2);
                     bord.Speler = 1;
                     bord.TegenSpeler = 2;
                     this.aanzet.Text = "Blauw is aan zet";
