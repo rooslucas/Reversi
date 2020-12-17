@@ -178,8 +178,8 @@ namespace Reversi
             Application.Restart();
         }
 
-        // Helpt met welke zetten mogelijk zijn
-/*        void Help(object sender, EventArgs e)
+/*        // Helpt met welke zetten mogelijk zijn
+*//*        void Help(object sender, EventArgs e)
         {
             int x, y;
             for(x = 0; x< bord.Breedte; x++)
