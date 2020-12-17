@@ -6,7 +6,7 @@ namespace Reversi
 {
     class Bord
     {
-        // Lengte en breedte van het bord. Zou door de gebruiker kunnen worden aangepast
+        // Lengte en breedte van het bord, kan door de gebruiker aangepast worden
         public int Lengte;
         public int Breedte;
 
@@ -15,29 +15,28 @@ namespace Reversi
         public int Speler = 1;
         public int bstenen, rstenen;
 
-        // Hier worden de berekeningen/tests mee gedaan. 
-        // Bij waarde 0 is het stuk leeg, bij waarde 1 is het stuk Rood en bij waarde 2 is het stuk blauw.
+        // Bij waarde 0 is het veld leeg, bij waarde 1 Rood en bij waarde 2 blauw
         public int[,] Velden;
 
         // Deze struct wordt geupdate in de Zet methode. 
-        // Hij geeft het aantal tegels weer dat wordt geflipt en het nieuwe veld dat daardoor ontstaat bij een nieuwe zet.
-        public struct Bord_Update
+        // Geeft het aantal tegels weer dat wordt geflipt en het nieuwe veld dat daardoor ontstaat bij een nieuwe zet
+        public struct BordUpdate
         {
             public int tegelflip;
             public int[,] nieuwVeld;
         }
-        public Bord_Update update;
+        public BordUpdate Update;
 
+        // Geeft de waarde van het veld terug
         public int KrijgVeld(int x, int y)
         {
             return Velden[x, y];
         }
 
+        // Past de waarde van een veld aan zodat het een kleur kan krijgen
         public void ZetVeld(int x, int y, int speler)
         {
-            if (speler == 0 || speler == 1 || speler == 2)
-                Velden[x, y] = speler;
-            else if (speler == 3)
+            if (speler == 0 || speler == 1 || speler == 2 || speler == 3)
                 Velden[x, y] = speler;
         }
 
@@ -58,7 +57,7 @@ namespace Reversi
             ZetVeld(Breedte / 2, Lengte / 2 - 1, 2);
         }
 
-        // Tel het aantal stenen voor beide kleuren
+        // Telt het aantal stenen voor beide kleuren
         public void AantalStenen()
         {
             int x, y;
@@ -78,43 +77,23 @@ namespace Reversi
             }
         }
 
-        // Controleer of de zet geldig is aan de hand van de regels
+        // Controleert of de zet geldig is aan de hand van de regels
         public bool BeurtValide(int x, int y)
         {
             return (Velden[x, y] == 0 || Velden[x, y] == 3) && Zet(x,y);
         }
 
-
-        //Controleert of het stuk een aanliggend stuk heeft
-        /* Bij het officiële spel mag je stukken niet schuin aanleggen. 
-         * Deze methode is daarvoor geschreven, maar wordt nooit aangeroepen. 
-         * Dit is omdat het spel in de inleveropdracht zich niet aan de officiele regels houdt.*/
-        private bool Aanliggend(int x, int y)
-        {
-            bool aanliggend = false;
-            int[] burenX = { 0, 1, 0, -1 };
-            int[] burenY = { 1, 0, -1, 0 };
-            for (int i=0;i<4;i++)
-            {
-                if (0<=x + burenX[i] && x+burenX[i]<Breedte && 0 <=y+burenY[i] && y +burenY[i]<Lengte)
-                {
-                    if (Velden[x+burenX[i],y+burenY[i]]!=0)
-                        aanliggend = true;
-                }
-            }
-            return aanliggend;
-        }
-        // Deze methode kijk wat er gebeurt als er een zet op de plek (x,y) wordt gedaan. 
-        // Hierbij wordt gekeken naar het aantal tegels dat wordt geflipt en welk nieuw veld daardoor ontstaat (wordt gezet in de struct update).
-        // returned false als er 0 tegels worden geflipt, anders true.
+        // Kijkt wat er gebeurt als er een zet op de plek (x,y) wordt gedaan
+        // Hierbij wordt gekeken naar het aantal tegels dat wordt geflipt en welk nieuw veld daardoor ontstaat
+        // Returned false als er 0 tegels worden geflipt, anders true
         public bool Zet(int x, int y)
         {
-            update.tegelflip = 0;
-            update.nieuwVeld = new int[Breedte, Lengte];
+            Update.tegelflip = 0;
+            Update.nieuwVeld = new int[Breedte, Lengte];
             for (int i = 0; i < Lengte; i++)
             { 
                 for (int j = 0; j < Breedte; j++)
-                    update.nieuwVeld[i,j] = Velden[i,j];
+                    Update.nieuwVeld[i,j] = Velden[i,j];
             }
             int[] burenX = { 1, 1, 1, 0, 0, -1, -1, -1 };
             int[] burenY = { 1, 0, -1, 1, -1, 1, 0, -1 };
@@ -132,8 +111,8 @@ namespace Reversi
                             {
                                 if (Velden[x + burenX[direction] * i, y + burenY[direction] * i] != Speler)
                                 {
-                                    update.tegelflip++;
-                                    update.nieuwVeld[x + burenX[direction] * i, y + burenY[direction] * i] =Speler;
+                                    Update.tegelflip++;
+                                    Update.nieuwVeld[x + burenX[direction] * i, y + burenY[direction] * i] =Speler;
                                 }
                                     
                             }
@@ -141,10 +120,11 @@ namespace Reversi
                     }
                 }
             }
-            update.nieuwVeld[x, y] = Speler;
-            return update.tegelflip!=0;
+            Update.nieuwVeld[x, y] = Speler;
+            return Update.tegelflip!=0;
         }
 
+        // Controleert of het spel afgelopen is
         public bool Einde()
         {
             int x, y, einde;
@@ -164,15 +144,17 @@ namespace Reversi
             else return false;
         }
 
+        // Controleert wie de winnaar is
         public string Winnaar()
         {
             if (bstenen > rstenen)
-                return "BLAUW HEEFT GEWONNEN";
+                return "BLAUW";
             else if (bstenen < rstenen)
-                return "ROOD HEEFT GEWONNEN";
+                return "ROOD";
             else return "HET IS GELIJKSPEL";
         }
 
+        // Helpt een speler met welke zetten mogelijk zijn
         public void HelpSpeler(int aan)
         {
             int x, y;

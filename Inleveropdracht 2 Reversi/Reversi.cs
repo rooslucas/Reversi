@@ -35,7 +35,7 @@ namespace Reversi
 
             // Laat zien wie er begint
             aanzet.Location = new Point(30, bord.Lengte * 60 + 50);
-            aanzet.Size = new Size(100, 35);
+            aanzet.Size = new Size(120, 35);
             aanzet.Text = "Blauw begint";
             aanzet.ForeColor = Color.Navy;
             aanzet.Font = lettertype;
@@ -70,6 +70,7 @@ namespace Reversi
             this.Controls.Add(help);
             this.Controls.Add(nieuwspel);
 
+            // Maak de spelomgeving
             this.ClientSize = new Size(bord.Breedte * 60, bord.Lengte * 60 + 200);
             this.BackColor = Color.AliceBlue;
             this.Text = "Reversi";
@@ -77,7 +78,18 @@ namespace Reversi
             GenereerKlikveld();
             
         }
-        //Maakt de klik velden en voegt hem aan de Form toe
+
+        // Tekent de stenen in de spelomgeving
+        void TekenStenen(object sender, PaintEventArgs pea)
+        {
+            Graphics gr = pea.Graphics;
+
+            gr.FillRectangle(Brushes.Navy, 180, bord.Lengte * 60 + 50, 18, 18);
+            gr.FillRectangle(Brushes.Crimson, 180, bord.Lengte * 60 + 70, 18, 18);
+
+        }
+
+        // Maakt de klik velden en voegt hem aan de Form toe
         void GenereerKlikveld()
         {
             KlikVelden = new Button[bord.Breedte, bord.Lengte];
@@ -100,10 +112,10 @@ namespace Reversi
             RenderBord();
         }
 
-        //De buttons in klik_veld worden geupdate met de waardes in bord 
+        // De buttons in klikvelden worden gkleurd met de waardes van het veld 
         void RenderBord()
         {
-            Color[] kleur = { Color.White, Color.Navy, Color.Crimson, Color.Gray };
+            Color[] kleur = { Color.White, Color.Navy, Color.Crimson, Color.LightGray };
             for (int x = 0; x < bord.Breedte; x++)
             {
                 for (int y = 0; y < bord.Lengte; y++)
@@ -111,26 +123,6 @@ namespace Reversi
                     KlikVelden[x, y].BackColor = kleur[bord.KrijgVeld(x,y)];
                 }
             }
-        }
-
-        void TekenStenen(object sender, PaintEventArgs pea)
-        {
-            Graphics gr = pea.Graphics;
-
-            gr.FillRectangle(Brushes.Navy, 180, bord.Lengte * 60 + 50, 18, 18);
-            gr.FillRectangle(Brushes.Crimson, 180, bord.Lengte * 60 + 70, 18, 18);
-
-            if (bord.Einde())
-            {
-                Pen lint = new Pen(Brushes.Purple, 10.0F);
-                Pen goud = new Pen(Brushes.LightGoldenrodYellow, 4.0F);
-
-                gr.DrawLine(lint, 130, bord.Lengte * 60 + 20, 145, bord.Lengte * 60 + 55);
-                gr.DrawLine(lint, 160, bord.Lengte * 60 + 20, 150, bord.Lengte * 60 + 55);
-                gr.FillEllipse(Brushes.Gold, 135, bord.Lengte * 60 + 50, 25, 25);
-                gr.DrawLine(goud, 148, bord.Lengte * 60 + 55, 148, bord.Lengte * 60 + 67);
-            }
-
         }
 
         // Speler die aan de beurt is plaatst steen van zijn kleur
@@ -146,11 +138,11 @@ namespace Reversi
             y = int.Parse(tag[1]);
 
             // Controleer of de zet valide is
-
             if (bord.BeurtValide(x, y))
             {
-                bord.Velden = bord.update.nieuwVeld;
-                // Controleer wie er aan de beurt is en verander de steen van kleur
+                bord.Velden = bord.Update.nieuwVeld;
+
+                // Controleer wie er aan de beurt is
                 if (bord.Speler == 1)
                 {
                     bord.Speler = 2;
@@ -164,12 +156,19 @@ namespace Reversi
                     this.aanzet.ForeColor = Color.Navy;
                 }
 
+                // Controleer of het spel afgelopen is
                 if (bord.Einde())
                 {
-                    this.aanzet.Text = bord.Winnaar();
+                    this.aanzet.Text = $"{bord.Winnaar()} HEEFT GEWONNEN";
                     this.aanzet.ForeColor = Color.Black;
+                    this.aanzet.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
  
                 }
+            }
+
+            else if(bord.Einde())
+            {
+                this.aanzet.Text = $"{bord.Winnaar()} heeft echt gewonnen...";
             }
 
             // Controleer of het spel is afgelopen
@@ -186,7 +185,6 @@ namespace Reversi
                 bord.HelpSpeler(1);
             
             RenderBord();
-
         }
 
         // Start een nieuw spel op
@@ -198,7 +196,6 @@ namespace Reversi
         // Helpt met welke zetten mogelijk zijn
         void Help(object sender, EventArgs e)
         {
-            //geklikt = false;
             if (!geklikt)
             {
                 bord.HelpSpeler(1);
@@ -211,9 +208,7 @@ namespace Reversi
                 geklikt = false;
             }
 
-
             RenderBord();
-
         }
     }
 }
