@@ -25,6 +25,7 @@ namespace Reversi
             public int tegelflip;
             public int[,] nieuwVeld;
         }
+
         public int KrijgVeld(int x, int y)
         {
             return Velden[x, y];
@@ -128,6 +129,15 @@ namespace Reversi
                 }
             }
             return update;
+        }
+
+        public string Winnaar()
+        {
+            if (bstenen > rstenen)
+                return "BLAUW HEEFT GEWONNEN";
+            else if (bstenen < rstenen)
+                return "ROOD HEEFT GEWONNEN";
+            else return "HET IS GELIJKSPEL";
         }
     }
 }
