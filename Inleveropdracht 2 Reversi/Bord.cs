@@ -20,6 +20,8 @@ namespace Reversi
         // Bij waarde 0 is het stuk leeg, bij waarde 1 is het stuk Rood en bij waarde 2 is het stuk blauw.
         public int[,] Velden;
 
+        // Deze struct wordt geupdate in de Zet methode. 
+        // Hij geeft het aantal tegels weer dat wordt geflipt en het nieuwe veld dat daardoor ontstaat bij een nieuwe zet.
         public struct Bord_Update
         {
             public int tegelflip;
@@ -80,12 +82,14 @@ namespace Reversi
         // Controleer of de zet geldig is aan de hand van de regels
         public bool BeurtValide(int x, int y)
         {
-            return Velden[x, y] == 0 && Zet(x,y).tegelflip!=0;
+            return Velden[x, y] == 0 && Zet(x,y);
         }
 
 
         //Controleert of het stuk een aanliggend stuk heeft
-        //Bij het officiële spel mag je stukken niet schuin aanleggen. Deze methode is daarvoor geschreven, maar wordt nooit aangeroepen omdat het spel dat we maken zich niet aan de officiele regels houdt 
+        /* Bij het officiële spel mag je stukken niet schuin aanleggen. 
+         * Deze methode is daarvoor geschreven, maar wordt nooit aangeroepen. 
+         * Dit is omdat het spel in de inleveropdracht zich niet aan de officiele regels houdt.*/
         private bool Aanliggend(int x, int y)
         {
             bool aanliggend = false;
@@ -101,7 +105,10 @@ namespace Reversi
             }
             return aanliggend;
         }
-        public Bord_Update Zet(int x, int y)
+        // Deze methode kijk wat er gebeurt als er een zet op de plek (x,y) wordt gedaan. 
+        // Hierbij wordt gekeken naar het aantal tegels dat wordt geflipt en welk nieuw veld daardoor ontstaat (wordt gezet in de struct update).
+        // returned false als er 0 tegels worden geflipt, anders true.
+        public bool Zet(int x, int y)
         {
             update.tegelflip = 0;
             update.nieuwVeld = new int[Breedte, Lengte];
@@ -136,9 +143,9 @@ namespace Reversi
                 }
             }
             update.nieuwVeld[x, y] = Speler;
-            return update;
+            return update.tegelflip!=0;
         }
-
+        
 /*        public bool Einde()
         {
             int x, y, einde;
