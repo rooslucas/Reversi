@@ -18,13 +18,14 @@ namespace Reversi
 
         // Hier worden de berekeningen/tests mee gedaan. 
         // Bij waarde 0 is het stuk leeg, bij waarde 1 is het stuk Rood en bij waarde 2 is het stuk blauw.
-        private int[,] Velden;
+        public int[,] Velden;
 
-        struct Bord_Update
+        public struct Bord_Update
         {
             public int tegelflip;
             public int[,] nieuwVeld;
         }
+        public Bord_Update update;
 
         public int KrijgVeld(int x, int y)
         {
@@ -75,13 +76,14 @@ namespace Reversi
         }
 
         // Controleer of de zet geldig is aan de hand van de regels
-        public bool BeurtValide(int x, int y, int speler)
+        public bool BeurtValide(int x, int y)
         {
-            return Velden[x, y] == 0 && Aanliggend(x, y) && Zet(x,y,speler).tegelflip!=0;
+            return Velden[x, y] == 0 && Zet(x,y).tegelflip!=0;
         }
 
 
         //Controleert of het stuk een aanliggend stuk heeft
+        //Bij het officiële spel mag je stukken niet schuin aanleggen. Deze methode is daarvoor geschreven, maar wordt nooit aangeroepen omdat het spel dat we maken zich niet aan de officiele regels houdt 
         private bool Aanliggend(int x, int y)
         {
             bool aanliggend = false;
@@ -97,9 +99,8 @@ namespace Reversi
             }
             return aanliggend;
         }
-        private Bord_Update Zet(int x, int y, int kleur)
+        public Bord_Update Zet(int x, int y)
         {
-            Bord_Update update;
             update.tegelflip = 0;
             update.nieuwVeld = new int[Breedte, Lengte];
             for (int i=0;i<Lengte;i++)
@@ -117,17 +118,22 @@ namespace Reversi
                     {
                         if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == 0)
                             distance = Lengte;
-                        else if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == kleur)
+                        else if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == Speler)
                         {
-                            update.tegelflip += distance - 1;
                             for (int i=1;i<distance;i++)
                             {
-                                Velden[x + burenX[direction] * i, y + burenY[direction] * i] = kleur;
+                                if (Velden[x + burenX[direction] * i, y + burenY[direction] * i] != Speler)
+                                {
+                                    update.tegelflip++;
+                                    update.nieuwVeld[x + burenX[direction] * i, y + burenY[direction] * i] =Speler;
+                                }
+                                    
                             }
                         }
                     }
                 }
             }
+            update.nieuwVeld[x, y] = Speler;
             return update;
         }
 
