@@ -115,7 +115,7 @@ namespace Reversi
         // De buttons in klikvelden worden gkleurd met de waardes van het veld 
         void RenderBord()
         {
-            Color[] kleur = { Color.White, Color.Navy, Color.Crimson, Color.LightGray };
+            Color[] kleur = { Color.White, Color.Navy, Color.Crimson, Color.Silver };
             for (int x = 0; x < bord.Breedte; x++)
             {
                 for (int y = 0; y < bord.Lengte; y++)
