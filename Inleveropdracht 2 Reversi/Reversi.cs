@@ -49,6 +49,7 @@ namespace Reversi
             rood.Font = lettertype;
             this.Controls.Add(blauw);
             this.Controls.Add(rood);
+            this.Paint += this.TekenStenen;
 
             // Toon de help en nieuwspel button
             help.Location = new Point(205, bord.Lengte * 60 + 120);
@@ -56,7 +57,7 @@ namespace Reversi
             help.Text = "Help";
             help.Font = new Font("Arial", 9, FontStyle.Bold);
             help.BackColor = Color.LavenderBlush;
-            help.Click += this.Help; 
+            //help.Click += this.Help; 
             nieuwspel.Size = new Size(80, 30);
             nieuwspel.Location = new Point(75, bord.Lengte * 60 + 120);
             nieuwspel.Text = "Nieuw Spel";
@@ -99,7 +100,7 @@ namespace Reversi
         //De buttons in klik_veld worden geupdate met de waardes in bord 
         void RenderBord()
         {
-            Color[] kleur = { Color.White, Color.Navy, Color.Crimson };
+            Color[] kleur = { Color.White, Color.Navy, Color.Crimson, Color.Gray };
             for (int x = 0; x < bord.Breedte; x++)
             {
                 for (int y = 0; y < bord.Lengte; y++)
@@ -107,6 +108,14 @@ namespace Reversi
                     KlikVelden[x, y].BackColor = kleur[bord.KrijgVeld(x,y)];
                 }
             }
+        }
+
+        void TekenStenen(object sender, PaintEventArgs pea)
+        {
+            Graphics gr = pea.Graphics;
+
+            gr.FillRectangle(Brushes.Navy, 180, bord.Lengte * 60 + 50, 18, 18);
+            gr.FillRectangle(Brushes.Crimson, 180, bord.Lengte * 60 + 70, 18, 18);
         }
 
         // Speler die aan de beurt is plaatst steen van zijn kleur
@@ -142,9 +151,17 @@ namespace Reversi
                 }
             }
 
+            // Controleer of het spel is afgelopen
             else
-                this.aanzet.Text = $"DEZE ZET IS NIET GELDIG";
-            // controleer hier of spel is afgelopen
+            {
+/*                if (bord.Einde())
+                {
+                    this.aanzet.Text = bord.Winnaar();
+                    this.aanzet.ForeColor = Color.Black;
+                }*/
+                //else
+                    this.aanzet.Text = $"DEZE ZET IS NIET GELDIG";
+            }
 
             // Toon het aantal stenen
             bord.AantalStenen();
@@ -162,9 +179,18 @@ namespace Reversi
         }
 
         // Helpt met welke zetten mogelijk zijn
-        void Help(object sender, EventArgs e)
+/*        void Help(object sender, EventArgs e)
         {
+            int x, y;
+            for(x = 0; x< bord.Breedte; x++)
+            {
+                for (y = 0; y < bord.Lengte; y++)
+                    if (bord.BeurtValide(x, y, bord.Speler))
+                    {
+                        bord.ZetVeld(x, y, 3);
+                    }
+            }
 
-        }
+        }*/
     }
 }

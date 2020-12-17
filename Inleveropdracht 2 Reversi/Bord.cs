@@ -36,6 +36,8 @@ namespace Reversi
         {
             if (speler == 0 || speler == 1 || speler == 2)
                 Velden[x, y] = speler;
+            else if (speler == 3)
+                Velden[x, y] = speler;
         }
 
         // Maakt een leeg bord met in het midden 4 stukken van beide partijen.
@@ -137,6 +139,25 @@ namespace Reversi
             return update;
         }
 
+/*        public bool Einde()
+        {
+            int x, y, einde;
+            einde = 0;
+            for (x = 0; x < Breedte; x++)
+            {
+                for (y = 0; y < Lengte; y++)
+                {
+                    if (!BeurtValide(x, y, 1) || !BeurtValide(x, y, 2))
+                        einde += 1;
+                }
+
+            }
+
+            if (einde == Breedte * Lengte)
+                return true;
+            else return false;
+        }
+
         public string Winnaar()
         {
             if (bstenen > rstenen)
@@ -144,6 +165,6 @@ namespace Reversi
             else if (bstenen < rstenen)
                 return "ROOD HEEFT GEWONNEN";
             else return "HET IS GELIJKSPEL";
-        }
+        }*/
     }
 }
