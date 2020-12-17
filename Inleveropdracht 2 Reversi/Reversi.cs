@@ -154,12 +154,12 @@ namespace Reversi
             // Controleer of het spel is afgelopen
             else
             {
-               if (bord.Einde())
+/*                if (bord.Einde())
                 {
                     this.aanzet.Text = bord.Winnaar();
                     this.aanzet.ForeColor = Color.Black;
-                }
-                else
+                }*/
+                //else
                     this.aanzet.Text = $"DEZE ZET IS NIET GELDIG";
             }
 
