@@ -13,7 +13,6 @@ namespace Reversi
         // Variabele om te bepalen wie er aan de beurt is
         // Blauw is speler 1 en rood is speler 2
         public int Speler = 1;
-        public int TegenSpeler = 2;
         public int bstenen, rstenen;
 
         // Hier worden de berekeningen/tests mee gedaan. 
@@ -82,7 +81,7 @@ namespace Reversi
         // Controleer of de zet geldig is aan de hand van de regels
         public bool BeurtValide(int x, int y)
         {
-            return Velden[x, y] == 0 && Zet(x,y);
+            return (Velden[x, y] == 0 || Velden[x, y] == 3) && Zet(x,y);
         }
 
 
@@ -112,20 +111,20 @@ namespace Reversi
         {
             update.tegelflip = 0;
             update.nieuwVeld = new int[Breedte, Lengte];
-            for (int i=0;i<Lengte;i++)
+            for (int i = 0; i < Lengte; i++)
             { 
-                for (int j=0;j<Breedte;j++)
+                for (int j = 0; j < Breedte; j++)
                     update.nieuwVeld[i,j] = Velden[i,j];
             }
             int[] burenX = { 1, 1, 1, 0, 0, -1, -1, -1 };
             int[] burenY = { 1, 0, -1, 1, -1, 1, 0, -1 };
-            for (int direction=0;direction<8;direction++)
+            for (int direction = 0; direction < 8; direction++)
             {
-                for (int distance=1;distance<Lengte;distance++)
+                for (int distance = 1; distance < Lengte; distance++)
                 {
                     if (0 <= x + burenX[direction] * distance && x + burenX[direction] * distance < Breedte && 0 <= y + burenY[direction] * distance && y + burenY[direction] * distance < Lengte)
                     {
-                        if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == 0)
+                        if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == 0 || Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == 3)
                             distance = Lengte;
                         else if (Velden[x + burenX[direction] * distance, y + burenY[direction] * distance] == Speler)
                         {
@@ -172,6 +171,27 @@ namespace Reversi
             else if (bstenen < rstenen)
                 return "ROOD HEEFT GEWONNEN";
             else return "HET IS GELIJKSPEL";
+        }
+
+        public void HelpSpeler(int aan)
+        {
+            int x, y;
+
+            for (x = 0; x < Breedte; x++)
+            {
+                for (y = 0; y < Lengte; y++)
+                    if (KrijgVeld(x, y) == 3)
+                        ZetVeld(x, y, 0);
+            }
+            if (aan == 1)
+            {
+                for (x = 0; x < Breedte; x++)
+                {
+                    for (y = 0; y < Lengte; y++)
+                        if (BeurtValide(x, y))
+                            ZetVeld(x, y, 3);
+                }
+            }
         }
     }
 }
